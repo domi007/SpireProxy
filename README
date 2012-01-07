@@ -1,1 +1,93 @@
 This project aims to create a fully automated SpireProxy server.
+
+BE WARNED!
+DRAGONS ARE AHEAD!
+Meaning:
+-this code comes without any warranty
+-this code is extremely dirty, but HOPEFULLY doesn't contain any bugs
+
+If you think you can't live with the feeling you are running dirty code, then modify it yourself, you are free to do that!
+
+VERY FIRST TIME USERS:
+-1. Run dependencies.sh to get all the programs needed to run the server:
+sudo su
+./dependencies.sh
+
+
+FIRST TIME USERS:
+0. Set up a fakeDNS server. Configure the script attached (fakedns.rb) like th$
+
+$R = Resolv::DNS.new(:nameserver =>"GET YOUR NAMESERVER HERE")
+Name = Resolv::DNS::Name
+
+RubyDNS::run_server(:listen => [[:udp, "0.0.0.0", 53]]) do
+    # For this exact address record, return an IP address
+    match("guzzoni.apple.com", :A) do |transaction|
+        transaction.respond!("GET YOUR IP HERE")
+
+
+GET YOUR NAMESERVER HERE = put in a DNS server that is valid, if you don't know what to do,$
+Always check your /etc/resolv.conf if it doesn't work, if you have an entry like this:
+nameserver SOME-IP-ADDRESS
+Then put SOME-IP-ADDRESS in the file mentioned above.
+
+GET YOUR IP HERE = put in your server's IP address (get it from ifconfig)
+
+Run the server like this:
+sudo ruby fakedns.rb
+
+Leave it running!
+
+Now go into your iPhone's settings (both 4/3GS/iPod Touch 4G AND 4S) -> WiFi -> little blue arrow next to your WiFi's name -> DNS
+Put in your server's IP address into DNS
+
+1. You need to create your own certificates by using the certs.sh bash script and install the ca.crt on your device (email it to yourself or run a webserver and host the file there)
+1/a. You also need to copy the server.passless files (both) to every directory here (YES EVERY SINGLE FOLDER!, even the one that contains README)
+2. You need to run AuthGrabber first to obtain the following data:
+XAceHostKey
+AssistantIDKey
+SpeechIDKey
+THESE values ARE CONSTANT, and DON'T CHANGE EVERY 24 hours, SO YOU NEED TO GRAB THEM ONLY ONCE!
+
+Then to run the auth grabber, just do 'sudo ./cache.sh' (no quotes)
+
+All auth data is written to ./auths as acehosts0.txt, acehosts1.txt etc.
+From these files you can copy and paste their values into SiriAuth/siriAuth.rb:
+
+XAceHostKey = "PUT IT IN HERE"
+
+AssistantIDKey = "PUT IT IN HERE"
+
+SpeechIDKey = "PUT IT IN HERE"
+
+After that, you can proceed!
+3. If you have done everything right, now you have:
+-a fake DNS server running
+-edited siriAuth.rb and pastes in the constant values
+
+So now, there is not much left:
+a; run eventMachineGuzzoni.rb like this:
+cd Cracking-Siri
+sudo ruby eventMachineGuzzoni.rb
+
+b; run siriAuth.rb server in a different console:
+cd SiriAuth
+sudo ruby start.rb
+
+Now you should have a server listening on port 443 (this will handle all 4S reuests and capture the key you need), and a server listening on port 3000 (could be changed by editing siriAuth.rb)
+
+Now go into your iPhone's settings, scroll down and find Spire, then enter for server:
+https://guzzzoni.apple.com:3000
+
+If your 4S provides you keys (ask the 4S user to use Siri at least twice a day!) you can use Siri on yor iPhone 4/3GS or iPod Touch 4G without any problems
+
+
+All credit goes down to these people:
+
+ -Applidium for creating Cracking-Siri
+ -plamoni for using Cracking-Siri to create SiriProxy
+ -stantheripper for creating SiriAuth
+
+Thank you for being awesome!
+
+http://domonkos.tomcsanyi.net
