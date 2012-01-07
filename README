@@ -43,29 +43,11 @@ Put in your server's IP address into DNS
 
 1. You need to create your own certificates by using the certs.sh bash script and install the ca.crt on your device (email it to yourself or run a webserver and host the file there)
 1/a. You also need to copy the server.passless files (both) to every directory here (YES EVERY SINGLE FOLDER!, even the one that contains README)
-2. You need to run AuthGrabber first to obtain the following data:
-XAceHostKey
-AssistantIDKey
-SpeechIDKey
-THESE values ARE CONSTANT, and DON'T CHANGE EVERY 24 hours, SO YOU NEED TO GRAB THEM ONLY ONCE!
-
-Then to run the auth grabber, just do 'sudo ./cache.sh' (no quotes)
-
-All auth data is written to ./auths as acehosts0.txt, acehosts1.txt etc.
-From these files you can copy and paste their values into SiriAuth/siriAuth.rb:
-
-XAceHostKey = "PUT IT IN HERE"
-
-AssistantIDKey = "PUT IT IN HERE"
-
-SpeechIDKey = "PUT IT IN HERE"
 
 After that, you can proceed!
-3. If you have done everything right, now you have:
--a fake DNS server running
--edited siriAuth.rb and pastes in the constant values
 
-So now, there is not much left:
+3. So now, there is not much left:
+
 a; run eventMachineGuzzoni.rb like this:
 cd Cracking-Siri
 sudo ruby eventMachineGuzzoni.rb

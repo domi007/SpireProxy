@@ -35,16 +35,12 @@ def parse
       puts "#####################################################"
       plist_object = CFPropertyList.native_types(plist.value)
       $sessionData = plist_object["properties"]["sessionValidationData"]
+      $assistantId =  plist_object["properties"]["assistantId"]
+      $speechId =  plist_object["properties"]["speechId"]
       @stream = @stream[chunk_size+5..-1]
     end
   end
 
-
-XAceHostKey = "PUT IT IN HERE"
-
-AssistantIDKey = "PUT IT IN HERE"
-
-SpeechIDKey = "PUT IT IN HERE"
 
 LOG_LEVEL = 1
 
@@ -57,11 +53,6 @@ end
 
 class SiriProxyConnection < EventMachine::Connection
 puts "Server started"
-puts "Selected X-Ace Host: #{XAceHostKey}"
-puts "Selected assistantId: #{AssistantIDKey}"
-puts "Selected speechId: #{SpeechIDKey}"
-puts "Selected ValidationData: " 
-#puts ValidationDataKey.unpack('H*')
 
 	include EventMachine::Protocols::LineText2
 
@@ -104,7 +95,11 @@ puts "Selected ValidationData: "
 	def receive_line(line) #Process header
 		#puts "[Header - #{self.name}] #{line}" if LOG_LEVEL > 2
 		if(line == "") #empty line indicates end of headers
-			self.outputBuffer << ("X-Ace-Host: #{XAceHostKey}\x0d\x0a")
+	                file = open("../Cracking-Siri/kimenet_2", "rb") {|io| io.read}
+	                xAceHostKey = file.split("\r\n")[4].split(' ')[1]
+			puts "XACE-host: "
+			puts xAceHostKey
+			self.outputBuffer << ("X-Ace-Host: #{xAceHostKey}\x0d\x0a")
 			#puts "[Debug - #{self.name}] Found end of headers" if LOG_LEVEL > 3
 			self.set_binary_mode
 			self.processedHeaders = true
@@ -228,12 +223,14 @@ puts "Selected ValidationData: "
 		puts "Injecting auth keys..."
 		@zstream = Zlib::Inflate.new
 		@stream = ""
-		file = open("../Cracking-Siri/vegso_kimenet", "rb") {|io| io.read}
-		data = file.split("\r\n")[6]
+		file = open("../Cracking-Siri/kimenet_2", "rb") {|io| io.read}
+		data = file.split("\r\n")[6]		
 		data = data.remove_leading_hex('aaccee02') # Remove ACE header
 		@stream << @zstream.inflate(data)
 		parse     
 		validationDataKey =  $sessionData
+		assistantIDKey = $assistantId
+		speechIDKey = $speechId
 		if object["properties"] != nil
 		
 			if object["properties"]["validationData"] !=nil && !object["properties"]["validationData"].empty?
@@ -247,10 +244,10 @@ puts "Selected ValidationData: "
 			end
 			if object["properties"]["speechId"] !=nil && !object["properties"]["speechId"].empty?
 	    			puts "[Injecting speechId]"
-					object["properties"]["speechId"] = "#{SpeechIDKey}"
+					object["properties"]["speechId"] = "#{speechIDKey}"
 			end
 			if object["properties"]["assistantId"] !=nil && !object["properties"]["assistantId"].empty?
-				object["properties"]["assistantId"] = "#{AssistantIDKey}"
+				object["properties"]["assistantId"] = "#{assistantIDKey}"
 			end
 		end
 		puts "[Info - #{self.name}] Object: #{object["class"]}" if LOG_LEVEL == 1
