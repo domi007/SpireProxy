@@ -1,4 +1,4 @@
-#read -p "Please enter here the domain or IP address of your Siri server (thing.something.com or 12.34.56.78): " SERVER
+read -p "Please enter here the domain or IP address of your Siri server (thing.something.com or 12.34.56.78): " SERVER
 read -p "Now enter your name: " NAME
 read -p "Now enter your email: " EMAIL
 read -p "When it asks for a password, just enter 'pass' for all of them (no quotations) Press enter to continue..."
@@ -8,8 +8,8 @@ US
 California
 Cupertino
 $NAME, Inc.
-guzzoni.apple.com
-guzzoni.apple.com
+$SERVER
+$SERVER
 $EMAIL
 
 
@@ -21,8 +21,8 @@ US
 California
 Cupertino
 $NAME, Inc.
-guzzoni.apple.com
-guzzoni.apple.com
+$SERVER
+$SERVER
 $EMAIL
 
 
