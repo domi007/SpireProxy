@@ -15,7 +15,7 @@ sudo su
 
 
 FIRST TIME USERS:
-0. Set up a fakeDNS server. Configure the script attached (fakedns.rb) like th$
+0. Set up a fakeDNS server. Configure the script attached (fakedns.rb) like this:
 
 $R = Resolv::DNS.new(:nameserver =>"GET YOUR NAMESERVER HERE")
 Name = Resolv::DNS::Name
@@ -26,7 +26,7 @@ RubyDNS::run_server(:listen => [[:udp, "0.0.0.0", 53]]) do
         transaction.respond!("GET YOUR IP HERE")
 
 
-GET YOUR NAMESERVER HERE = put in a DNS server that is valid, if you don't know what to do,$
+GET YOUR NAMESERVER HERE = put in a DNS server that is valid, if you don't know what to do, put here Google's DNS: 8.8.8.8
 Always check your /etc/resolv.conf if it doesn't work, if you have an entry like this:
 nameserver SOME-IP-ADDRESS
 Then put SOME-IP-ADDRESS in the file mentioned above.
