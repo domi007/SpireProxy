@@ -95,7 +95,7 @@ puts "Server started"
 	def receive_line(line) #Process header
 		#puts "[Header - #{self.name}] #{line}" if LOG_LEVEL > 2
 		if(line == "") #empty line indicates end of headers
-	                file = open("../Cracking-Siri/kimenet_2", "rb") {|io| io.read}
+	                file = open("../kimenet_2", "rb") {|io| io.read}
 	                xAceHostKey = file.split("\r\n")[4].split(' ')[1]
 			puts "XACE-host: "
 			puts xAceHostKey
@@ -223,7 +223,7 @@ puts "Server started"
 		puts "Injecting auth keys..."
 		@zstream = Zlib::Inflate.new
 		@stream = ""
-		file = open("../Cracking-Siri/kimenet_2", "rb") {|io| io.read}
+		file = open("../kimenet_2", "rb") {|io| io.read}
 		data = file.split("\r\n")[6]		
 		data = data.remove_leading_hex('aaccee02') # Remove ACE header
 		@stream << @zstream.inflate(data)
