@@ -13,8 +13,9 @@ if [ "$(id -u)" == "0" ]; then
   echo 'export rvm_path="$HOME/.rvm"' >> /root/.rvmrc
 fi
 bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
-echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bash_profile
+echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bashrc
 echo "Installing ruby 1.9.2... [this takes bloody ages :p]"
+source ~/.bashrc
 rvm install 1.9.2
 rvm use 1.9.2 --default
 echo "Installing required gems..."
